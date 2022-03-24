@@ -1,0 +1,114 @@
+{
+	"rabbit_version": "3.8.17",
+    "rabbitmq_version": "3.8.17",
+    "product_name": "RabbitMQ",
+    "users":
+    [
+        {
+            "name": "msg_user",
+            "password_hash": "RTTLSQwtvm48plffBuufdl3BzQ7GArNC033Dr5j9g3SHR8EC",
+            "hashing_algorithm": "rabbit_password_hashing_sha256",
+            "tags": "administrator",
+            "limits":
+            {}
+        }
+    ],
+    "vhosts":
+    [
+        {
+        	"metadata":
+            {
+                "description": "Default virtual host",
+                "tags":
+                []
+            },
+            "name": "/"
+        }
+    ],
+    "permissions":
+    [
+        {
+            "user": "msg_user",
+            "vhost": "/",
+            "configure": ".*",
+            "write": ".*",
+            "read": ".*"
+        }
+    ],
+    "topic_permissions":
+    [],
+    "parameters":
+    [
+        {
+            "value":
+            {
+                "max-connections": 15000,
+                "max-queues": 4000
+            },
+            "vhost": "/",
+            "component": "vhost-limits",
+            "name": "limits"
+        }
+    ],
+    "global_parameters":
+    [
+        {
+            "name": "cluster_name",
+            "value": "msg-rabbitmq"
+        }
+    ],
+    "policies":
+    [
+        {
+            "vhost": "/",
+            "name": "msg_policy",
+            "pattern": ".*",
+            "apply-to": "all",
+            "definition":
+            {
+                "ha-mode": "all",
+                "ha-sync-mode": "automatic",
+                "max-length": 8000000,
+                "overflow": "reject-publish",
+                "queue-mode": "lazy"
+            },
+            "priority": 1
+        }
+    ],
+    "queues":
+    [
+        {
+            "name": "messages_queue",
+            "vhost": "/",
+            "durable": false,
+            "auto_delete": false,
+            "arguments":
+            {}
+        }
+    ],
+    "exchanges":
+    [
+        {
+            "name": "messages_exchange",
+            "vhost": "/",
+            "type": "fanout",
+            "durable": false,
+            "auto_delete": false,
+            "internal": false,
+            "arguments":
+            {}
+        }
+    ],
+    "bindings":
+    [
+        {
+            "source": "messages_exchange",
+            "vhost": "/",
+            "destination": "messages_queue",
+            "destination_type": "queue",
+            "routing_key": "",
+            "arguments":
+            {}
+        }
+    ]
+}
